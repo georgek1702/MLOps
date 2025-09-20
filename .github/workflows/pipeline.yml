@@ -22,13 +22,13 @@ jobs:
         shell: powershell
 
       - name: Install Project Requirements
-        run: pip install -r MLOps/Tourism_Project/requirements.txt
+        run: pip install -r Tourism_Project/requirements.txt
         shell: powershell
 
       - name: Upload Dataset to Hugging Face Hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: python MLOps/Tourism_Project/model_building/data_register.py
+        run: python Tourism_Project/model_building/data_register.py
         shell: powershell
 
   # ---------------------------
