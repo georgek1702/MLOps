@@ -1,62 +1,108 @@
-name: Tourism Project Pipeline
+name: Tourism Project Pipeline - Windows
 
 on:
   push:
     branches:
-      - main  # Automatically triggers on push to the main branch
+      - main   # Trigger on push to main branch
+  workflow_dispatch:  # Manual trigger
 
 jobs:
 
+  # ---------------------------
+  # Step 1: Register Dataset
+  # ---------------------------
   register-dataset:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Install Dependencies
-        run: <add_code_here>
+        run: pip install --upgrade pip
+        shell: powershell
+
+      - name: Install Project Requirements
+        run: pip install -r mlops/requirements.txt
+        shell: powershell
+
       - name: Upload Dataset to Hugging Face Hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: <add_code_here>
+        run: python mlops/model_building/data_register.py
+        shell: powershell
 
+  # ---------------------------
+  # Step 2: Data Preparation
+  # ---------------------------
   data-prep:
     needs: register-dataset
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Install Dependencies
-        run: <add_code_here>
+        run: pip install --upgrade pip
+        shell: powershell
+
+      - name: Install Project Requirements
+        run: pip install -r mlops/requirements.txt
+        shell: powershell
+
       - name: Run Data Preparation
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: <add_code_here>
+        run: python mlops/model_building/prep.py
+        shell: powershell
 
-
-  model-traning:
+  # ---------------------------
+  # Step 3: Model Training
+  # ---------------------------
+  model-training:
     needs: data-prep
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Install Dependencies
-        run: <add_code_here>
+        run: pip install --upgrade pip
+        shell: powershell
+
+      - name: Install Project Requirements
+        run: pip install -r mlops/requirements.txt
+        shell: powershell
+
       - name: Start MLflow Server
-        run: |
-          nohup mlflow ui --host 0.0.0.0 --port 5000 &  # Run MLflow UI in the background
-          sleep 5  # Wait for a moment to let the server starts
+        run: Start-Process -NoNewWindow -FilePath "mlflow" -ArgumentList "ui --port 5000"
+        shell: powershell
+
       - name: Model Building
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: <add_code_here>
+        run: python mlops/model_building/train.py
+        shell: powershell
 
-
+  # ---------------------------
+  # Step 4: Deploy Hosting
+  # ---------------------------
   deploy-hosting:
-    runs-on: ubuntu-latest
-    needs: [model-traning,data-prep,register-dataset]
+    needs: [model-training, data-prep, register-dataset]
+    runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Install Dependencies
-        run: <add_code_here>
-      - name: Push files to Frontend Hugging Face Space
+        run: pip install --upgrade pip
+        shell: powershell
+
+      - name: Install Project Requirements
+        run: pip install -r mlops/requirements.txt
+        shell: powershell
+
+      - name: Push Files to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: <add_code_here>
-
+        run: python mlops/hosting/hosting.py
+        shell: powershell
