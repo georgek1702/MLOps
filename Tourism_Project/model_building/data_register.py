@@ -18,8 +18,9 @@ except RepositoryNotFoundError:
     create_repo(repo_id=repo_id, repo_type=repo_type, private=False)
     print(f"Space '{repo_id}' created.")
 
-api.upload_folder(
-    folder_path="tourism_project/data",
-    repo_id=repo_id,
-    repo_type=repo_type,
+api.upload_file(
+    path_or_fileobj="tourism_project/data/tourism.csv",
+    path_in_repo="tourism.csv",
+    repo_id="Georgek17/Customer_Visit_Predictor",
+    repo_type="dataset"
 )
