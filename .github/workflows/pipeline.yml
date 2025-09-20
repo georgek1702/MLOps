@@ -22,13 +22,13 @@ jobs:
         shell: powershell
 
       - name: Install Project Requirements
-        run: pip install -r mlops/requirements.txt
+        run: pip install -r MLOps/Tourism_Project/requirements.txt
         shell: powershell
 
       - name: Upload Dataset to Hugging Face Hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: python mlops/model_building/data_register.py
+        run: python MLOps/Tourism_Project/model_building/data_register.py
         shell: powershell
 
   # ---------------------------
@@ -46,13 +46,13 @@ jobs:
         shell: powershell
 
       - name: Install Project Requirements
-        run: pip install -r mlops/requirements.txt
+        run: pip install -r MLOps/Tourism_Project/requirements.txt
         shell: powershell
 
       - name: Run Data Preparation
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: python mlops/model_building/prep.py
+        run: python MLOps/Tourism_Project/model_building/prep.py
         shell: powershell
 
   # ---------------------------
@@ -70,7 +70,7 @@ jobs:
         shell: powershell
 
       - name: Install Project Requirements
-        run: pip install -r mlops/requirements.txt
+        run: pip install -r MLOps/Tourism_Project/requirements.txt
         shell: powershell
 
       - name: Start MLflow Server
@@ -80,7 +80,7 @@ jobs:
       - name: Model Building
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: python mlops/model_building/train.py
+        run: python MLOps/Tourism_Project/model_building/train.py
         shell: powershell
 
   # ---------------------------
@@ -98,11 +98,11 @@ jobs:
         shell: powershell
 
       - name: Install Project Requirements
-        run: pip install -r mlops/requirements.txt
+        run: pip install -r MLOps/Tourism_Project/requirements.txt
         shell: powershell
 
       - name: Push Files to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: python mlops/hosting/hosting.py
+        run: python MLOps/Tourism_Project/hosting/hosting.py
         shell: powershell
