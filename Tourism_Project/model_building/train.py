@@ -93,9 +93,9 @@ with mlflow.start_run():
     grid_search = GridSearchCV(model_pipeline, param_grid, cv=5, n_jobs=-1)
     grid_search.fit(Xtrain, ytrain)
 
-    '''# Log all parameter combinations and their mean test scores
+    # Log all parameter combinations and their mean test scores
     results = grid_search.cv_results_
-    for i in range(len(results['params'])):
+    '''for i in range(len(results['params'])):
         param_set = results['params'][i]
         mean_score = results['mean_test_score'][i]
         std_score = results['std_test_score'][i]
