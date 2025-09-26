@@ -93,7 +93,7 @@ with mlflow.start_run():
     grid_search = GridSearchCV(model_pipeline, param_grid, cv=5, n_jobs=-1)
     grid_search.fit(Xtrain, ytrain)
 
-    # Log all parameter combinations and their mean test scores
+    '''# Log all parameter combinations and their mean test scores
     results = grid_search.cv_results_
     for i in range(len(results['params'])):
         param_set = results['params'][i]
@@ -104,7 +104,7 @@ with mlflow.start_run():
         with mlflow.start_run(nested=True):
             mlflow.log_params(param_set)
             mlflow.log_metric("mean_test_score", mean_score)
-            mlflow.log_metric("std_test_score", std_score)
+            mlflow.log_metric("std_test_score", std_score) '''
 
     # Log best parameters separately in main run
     mlflow.log_params(grid_search.best_params_)
