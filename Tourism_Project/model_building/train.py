@@ -16,7 +16,7 @@ from huggingface_hub import login, HfApi, create_repo
 from huggingface_hub.utils import RepositoryNotFoundError, HfHubHTTPError
 import mlflow
 
-mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_tracking_uri("https://eff30c08f4ea.ngrok-free.app")
 mlflow.set_experiment("tourism_project-training-experiment")
 
 api = HfApi()
