@@ -6,7 +6,7 @@ api = HfApi(token=os.getenv("HF_TOKEN"))
 
 repo_id = "Georgek17/Customer_Visit_Predictor"
 repo_type = "space"
-space_sdk = "streamlit"
+space_sdk = "docker"
 folder_path = "tourism_project/deployment"
 
 try:
