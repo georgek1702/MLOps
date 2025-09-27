@@ -99,10 +99,10 @@ with mlflow.start_run():
 
     # Log all parameter combinations and their mean test scores
     results = grid_search.cv_results_
-    for i in range(len(results['params'])):
+    '''for i in range(len(results['params'])):
         param_set = results['params'][i]
         mean_score = results['mean_test_score'][i]
-        std_score = results['std_test_score'][i]
+        std_score = results['std_test_score'][i]'''
 
         # Log each combination as a separate MLflow run
         with mlflow.start_run(nested=True):
