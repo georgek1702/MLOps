@@ -3,8 +3,8 @@ name: Tourism Project Pipeline - Windows
 on:
   push:
     branches:
-      - main   # Trigger on push to main branch
-  workflow_dispatch:  # Manual trigger
+      - main
+  workflow_dispatch:
 
 jobs:
 
@@ -73,14 +73,26 @@ jobs:
         run: pip install -r Tourism_Project/requirements.txt
         shell: powershell
 
-      - name: Start MLflow Server
-        run: Start-Process -NoNewWindow -FilePath "mlflow" -ArgumentList "ui --port 5000"
+      - name: Start MLflow + ngrok
+        env:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        run: python mlflow_ngrok.py
+        shell: powershell
+
+      - name: Read MLflow URL
+        id: mlflow-url
+        run: echo "MLFLOW_URL=$(Get-Content mlflow_url.txt)" >> $env:GITHUB_ENV
         shell: powershell
 
       - name: Model Building
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          MLFLOW_TRACKING_URI: ${{ env.MLFLOW_URL }}
         run: python Tourism_Project/model_building/train.py
+        shell: powershell
+
+      - name: Show MLflow Public URL
+        run: echo "MLflow is available at $env:MLFLOW_URL"
         shell: powershell
 
   # ---------------------------
