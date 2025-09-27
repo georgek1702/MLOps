@@ -19,7 +19,6 @@ target = 'ProdTaken'
 
 # List of numerical features in the dataset
 numeric_features = [
-    'ProdTaken',               # whether the customer has purchased a package (0: No, 1: Yes)
     'Age',                     # Customer's age
     'CityTier',                # The city category based on development, population, and living standards (Tier 1 > Tier 2 >
     'DurationOfPitch',         # Duration of the sales pitch delivered to the customer.
