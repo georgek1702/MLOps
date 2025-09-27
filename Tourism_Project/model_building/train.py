@@ -80,12 +80,12 @@ xgb_model = xgb.XGBClassifier(scale_pos_weight=class_weight, random_state=42)
 
 # Define hyperparameter grid
 param_grid = {
-    'xgbclassifier__n_estimators': [50, 75, 100, 125, 150],    # number of tree to build
-    'xgbclassifier__max_depth': [2, 3, 4],    # maximum depth of each tree
-    'xgbclassifier__colsample_bytree': [0.4, 0.5, 0.6],    # percentage of attributes to be considered (randomly) for each tree
-    'xgbclassifier__colsample_bylevel': [0.4, 0.5, 0.6],    # percentage of attributes to be considered (randomly) for each level of a tree
-    'xgbclassifier__learning_rate': [0.01, 0.05, 0.1],    # learning rate
-    'xgbclassifier__reg_lambda': [0.4, 0.5, 0.6],    # L2 regularization factor
+    'xgbclassifier__n_estimators': [50, 100, 150, 200, 250],    # number of tree to build
+    'xgbclassifier__max_depth': [4, 8, 12],    # maximum depth of each tree
+    'xgbclassifier__colsample_bytree': [0.3, 0.6, 0.9],    # percentage of attributes to be considered (randomly) for each tree
+    'xgbclassifier__colsample_bylevel': [0.2, 0.6, 0.8],    # percentage of attributes to be considered (randomly) for each level of a tree
+    'xgbclassifier__learning_rate': [0.05, 0.1, 0.2, 0.25],    # learning rate
+    'xgbclassifier__reg_lambda': [0.1, 0.2, 0.4],    # L2 regularization factor
 }
 
 # Model pipeline
@@ -102,13 +102,13 @@ with mlflow.start_run():
     '''for i in range(len(results['params'])):
         param_set = results['params'][i]
         mean_score = results['mean_test_score'][i]
-        std_score = results['std_test_score'][i]'''
+        std_score = results['std_test_score'][i]
 
         # Log each combination as a separate MLflow run
         with mlflow.start_run(nested=True):
             mlflow.log_params(param_set)
             mlflow.log_metric("mean_test_score", mean_score)
-            mlflow.log_metric("std_test_score", std_score) 
+            mlflow.log_metric("std_test_score", std_score) '''
 
     # Log best parameters separately in main run
     mlflow.log_params(grid_search.best_params_)
