@@ -76,7 +76,7 @@ jobs:
       - name: Start MLflow + ngrok
         env:
           NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-        run: python mlflow_ngrok.py
+        run: python Tourism_Project/model_building/mlflow_ngrok.py
         shell: powershell
 
       - name: Read MLflow URL
