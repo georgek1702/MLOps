@@ -103,5 +103,5 @@ jobs:
       - name: Push Files to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: python MLOps/Tourism_Project/hosting/hosting.py
+        run: python Tourism_Project/hosting/hosting.py
         shell: powershell
