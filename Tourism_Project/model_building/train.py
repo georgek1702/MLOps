@@ -11,6 +11,7 @@ from sklearn.metrics import accuracy_score, classification_report, recall_score
 import joblib
 # for creating a folder
 import os
+os.environ["PYTHONIOENCODING"] = "utf-8"
 # for hugging face space authentication to upload files
 from huggingface_hub import login, HfApi, create_repo
 from huggingface_hub.utils import RepositoryNotFoundError, HfHubHTTPError
