@@ -82,9 +82,9 @@ jobs:
 
       
 
-  # ---------------------------
+  # ----------------------------
   # Step 4: Deploy Hosting
-  # ---------------------------
+  # ----------------------------
   deploy-hosting:
     needs: [model-training, data-prep, register-dataset]
     runs-on: windows-latest
