@@ -10,12 +10,18 @@ from huggingface_hub import login, HfApi
 
 # Define constants for the dataset and output paths
 api = HfApi(token=os.getenv("HF_TOKEN"))
+#Load dataset from HUggingface space
 DATASET_PATH = "hf://datasets/Georgek17/Customer_Visit_Predictor/tourism.csv"
 tourism_dataset = pd.read_csv(DATASET_PATH)
 print("Dataset loaded successfully.")
 
-# Define the target variable for the classification task
-target = 'ProdTaken'
+# Cleaning data
+
+# Drop Unnecessary Columns
+if "CustomerID" in tourism_dataset.columns:
+    tourism_dataset = tourism_dataset.drop(columns=["CustomerID"])
+
+# Handle Missing Values
 
 # List of numerical features in the dataset
 numeric_features = [
@@ -43,8 +49,31 @@ categorical_features = [
     'Designation'            # Customer's designation in their current organization.
 ]
 
+# Fill numeric columns with median
+for col in numeric_features:
+    if col in tourism_dataset.columns:
+        tourism_dataset[col] = tourism_dataset[col].fillna(tourism_dataset[col].median())
+
+# Fill categorical columns with mode
+for col in categorical_features:
+    if col in tourism_dataset.columns:
+        tourism_dataset[col] = tourism_dataset[col].fillna(tourism_dataset[col].mode()[0])
+
+# Drop rows where target variable is missing
+if "ProdTaken" in tourism_dataset.columns:
+    tourism_dataset = tourism_dataset.dropna(subset=["ProdTaken"])
+
+# Remove Duplicates
+tourism_dataset = tourism_dataset.drop_duplicates()
+
+# Encode Categorical Columns will be done within training
+
+# Define the target variable for the classification task
+target = 'ProdTaken'
+
+
 # Define predictor matrix (X) using selected numeric and categorical features
-X = tourism_dataset[numeric_features + categorical_features]
+X = tourism_dataset.drop(columns=['ProdTaken'])
 
 # Define target variable
 y = tourism_dataset[target]
@@ -66,6 +95,7 @@ ytest.to_csv("ytest.csv",index=False)
 
 files = ["Xtrain.csv","Xtest.csv","ytrain.csv","ytest.csv"]
 
+#Upload the resulting train and test datasets back to the Hugging Face data space.
 for file_path in files:
     api.upload_file(
         path_or_fileobj=file_path,
